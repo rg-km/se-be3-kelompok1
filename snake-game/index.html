@@ -3,19 +3,36 @@
     </head>
         <script type="text/javascript" src="index.js"></script>
     <body onload="draw();">
+
+        <!-- draw snakeboard -->
         <canvas id="snakeBoard" width="510" height="510" style="border:1px solid #000000; display: block; margin-left: auto; margin-right: auto;"></canvas>
-        <img id="apple" style="display: none;" width="15" height="15" src="assets/img/apel.png" alt="Apple">
-        <img id="snake-head-down" style="display: none;" width="15" height="15" src="assets/img/snake-head-down.png" alt="Snake Head Down">
-        <img id="snake-head-up" style="display: none;" width="15" height="15" src="assets/img/snake-head-up.png" alt="Snake Head Up">
-        <img id="snake-head-left" style="display: none;" width="15" height="15" src="assets/img/snake-head-left.png" alt="Snake Head Left">
-        <img id="snake-head-right" style="display: none;" width="15" height="15" src="assets/img/snake-head-right.png" alt="Snake Head Right">
-        <img id="snake-body" style="display: none;" width="15" height="15" src="assets/img/snake-body.png" alt="Snake Body">
+
+        <img id="life-icon" style="display: none;" width="17" height="17" src="assets/img/heart.png" alt="Life Icon">
+
+        <!-- get image apple -->
+        <img id="apple" style="display: none;" width="17" height="17" src="assets/img/apel.png" alt="Apple">
+
+        <!-- get snake head and body -->
+        <img id="snake-head-down" style="display: none;" width="17" height="17" src="assets/img/snake-head-down.png" alt="Snake Head Down">
+        <img id="snake-head-up" style="display: none;" width="17" height="17" src="assets/img/snake-head-up.png" alt="Snake Head Up">
+        <img id="snake-head-left" style="display: none;" width="17" height="17" src="assets/img/snake-head-left.png" alt="Snake Head Left">
+        <img id="snake-head-right" style="display: none;" width="17" height="17" src="assets/img/snake-head-right.png" alt="Snake Head Right">
+        <img id="snake-body" style="display: none;" width="17" height="17" src="assets/img/snake-body.png" alt="Snake Body">
+
+        <!-- get trap obstacle -->
+        <img id="trap" style="display: none;" width="17" height="17" src="assets/img/trap.png" alt="Trap Obstacle">
+
+        <!-- get audio -->
         <audio id="eat-apple"><source src="assets/sound/eat-apple-sound.wav" type="audio/wav"></audio>
         <audio id="game-over"><source src="assets/sound/game-over-sound.mp3" type="audio/mpeg"></audio>
         <audio id="level-up"><source src="assets/sound/level-up-sound.mp3" type="audio/mpeg"></audio>
+        <audio id="hit-something"><source src="assets/sound/hit-something-sound.mp3" type="audio/mpeg"></audio>
+
+        <!-- show level, score, speed  -->
         <p id="level" style="text-align: center; font-weight: bold;"></p>
         <p id="score" style="text-align: center; font-weight: bold;"></p>
         <canvas id="scoreBoard" width="50" height="50" style="border:1px solid #000000; display: block; margin-left: auto; margin-right: auto;"></canvas>
         <p id="speed" style="text-align: center; font-weight: bold;"></p>
+        <p id="life" style="text-align: center; font-weight: bold;"></p>
     </body>
 </html>
