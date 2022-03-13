@@ -12,7 +12,7 @@ const DIRECTION = {
 
 var MOVE_INTERVAL = 120;
 var RESET_INTERVAL = 120;
-var myObstacle;
+
 var wallX = [];
 var wallY = [];
 
@@ -236,19 +236,24 @@ function teleport(snake) {
 }
 
 function eat(snake, apple1, apple2) {
+    var soundEffect = document.getElementById("eat-apple");
 
     if (snake.head.x == apple1.position.x && snake.head.y == apple1.position.y) {
+        soundEffect.play();
         apple1.position = initPosition();
         snake.score++;
         snake.scoreReset++;
         snake.body.push({ x: snake.head.x, y: snake.head.y });
     }
     if (snake.head.x == apple2.position.x && snake.head.y == apple2.position.y) {
+        soundEffect.play();
         apple2.position = initPosition();
         snake.score++;
         snake.scoreReset++;
         snake.body.push({ x: snake.head.x, y: snake.head.y });
     }
+
+    var soundEffect = document.getElementById("level-up");
 
     while (snake.scoreReset === 5) {
         if (snake.level <= 4) {
@@ -266,6 +271,7 @@ function eat(snake, apple1, apple2) {
                 wallY = [];
                 initWall5();
             }
+            soundEffect.play();
             snake.level++;
             MOVE_INTERVAL -= 15;
             alert("Level Up - Level: " + snake.level);
@@ -340,14 +346,17 @@ function checkCollision(snakes) {
                 apple1.position = initPosition();
             }
         }
-        if (apple1.position.y === wallY[i]) {
-            if (apple1.position.x === wallX[i] || apple1.position.x === wallX[i]) {
-                apple1.position = initPosition();
+        if (apple2.position.y === wallY[i]) {
+            if (apple2.position.x === wallX[i] || apple2.position.x === wallX[i]) {
+                apple2.position = initPosition();
             }
         }
     }  
 
+    var soundEffect = document.getElementById("game-over");
+
     if (isCollide) {
+        soundEffect.play();
         alert("Game over - You get score " + snake.score);
         MOVE_INTERVAL = RESET_INTERVAL;
         snake = initSnake("purple");
