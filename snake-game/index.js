@@ -4,7 +4,6 @@ const REDRAW_INTERVAL = 50;
 const WIDTH = CANVAS_SIZE / CELL_SIZE;
 const HEIGHT = CANVAS_SIZE / CELL_SIZE;
 const DIRECTION = {
-    STOP: -1,
     LEFT: 0,
     RIGHT: 1,
     UP: 2,
@@ -83,7 +82,7 @@ function initSnake(color) {
     }
 }
 
-let snake = initSnake("purple");
+let snake = initSnake("green");
 
 let apple1 = {
     position: initPosition(),
@@ -162,21 +161,49 @@ function draw() {
 
         ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
         
-        drawCell(ctx, snake.head.x, snake.head.y, snake.color);
-        for (let i = 1; i < snake.body.length; i++) {
-            drawCell(ctx, snake.body[i].x, snake.body[i].y, snake.color);
+        //draw snake head image
+        if (snake.direction == 0) {
+            let imgSnakeHead = document.getElementById("snake-head-left");
+            ctx.drawImage(imgSnakeHead, snake.head.x * CELL_SIZE, snake.head.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
+        else if (snake.direction == 1) {
+            let imgSnakeHead = document.getElementById("snake-head-right");
+            ctx.drawImage(imgSnakeHead, snake.head.x * CELL_SIZE, snake.head.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
+        else if (snake.direction == 2) {
+            let imgSnakeHead = document.getElementById("snake-head-up");
+            ctx.drawImage(imgSnakeHead, snake.head.x * CELL_SIZE, snake.head.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
+        else if (snake.direction == 3) {
+            let imgSnakeHead = document.getElementById("snake-head-down");
+            ctx.drawImage(imgSnakeHead, snake.head.x * CELL_SIZE, snake.head.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
         }
 
-        let img = document.getElementById("apple");
+
+        //drawCell(ctx, snake.head.x, snake.head.y, snake.color);
+        let imgSnakeBody = document.getElementById("snake-body");
+        for (let i = 1; i < snake.body.length; i++) {
+            //drawCell(ctx, snake.body[i].x, snake.body[i].y, snake.color);
+            ctx.drawImage(
+                imgSnakeBody,
+                snake.body[i].x * CELL_SIZE,
+                snake.body[i].y * CELL_SIZE,
+                CELL_SIZE,
+                CELL_SIZE
+            )
+        }
+
+        //draw image apple
+        let imgApple = document.getElementById("apple");
         ctx.drawImage(
-            img,
+            imgApple,
             apple1.position.x * CELL_SIZE,
             apple1.position.y * CELL_SIZE,
             CELL_SIZE,
             CELL_SIZE
           );
           ctx.drawImage(
-            img,
+            imgApple,
             apple2.position.x * CELL_SIZE,
             apple2.position.y * CELL_SIZE,
             CELL_SIZE,
