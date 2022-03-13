@@ -150,7 +150,8 @@ function createWall() {
     let wallCanvas = document.getElementById("snakeBoard");
     let ctx = wallCanvas.getContext("2d");
     for (let i = 0; i < wallX.length; i++) {
-        drawCell(ctx, wallX[i], wallY[i], "#808080");
+        let imgTrap = document.getElementById("trap");
+        ctx.drawImage(imgTrap, wallX[i] * CELL_SIZE, wallY[i] * CELL_SIZE, CELL_SIZE, CELL_SIZE);
     }
 }
 
