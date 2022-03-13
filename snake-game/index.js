@@ -93,6 +93,21 @@ let apple2 = {
     position: initPosition(),
 }
 
+let lifes = {
+    position: initPosition(),
+}
+
+function checkPrime(number) {
+    let divider = 0;
+
+    for (let i = 1; i <= number; i++) {
+        if (number % i == 0) {
+        divider++;
+        }
+    }
+    return divider == 2 ? true : false;
+}
+
 function drawCell(ctx, x, y, color) {
     ctx.fillStyle = color;
     ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
@@ -165,7 +180,6 @@ function draw() {
 
         ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
-        
         // draw snake head 
         if (snake.direction == 0) {
             let imgSnakeHead = document.getElementById("snake-head-left");
@@ -184,7 +198,7 @@ function draw() {
             ctx.drawImage(imgSnakeHead, snake.head.x * CELL_SIZE, snake.head.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
         }
 
-        // draw Snake Body (ctx, snake.head.x, snake.head.y, snake.color);
+        // draw Snake Body
         let imgSnakeBody = document.getElementById("snake-body");
         for (let i = 1; i < snake.body.length; i++) {
             // drawCell(ctx, snake.body[i].x, snake.body[i].y, snake.color);
@@ -202,7 +216,13 @@ function draw() {
         // draw apple
         let imgApple = document.getElementById("apple");
         ctx.drawImage(imgApple, apple1.position.x * CELL_SIZE, apple1.position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-        ctx.drawImage(imgApple,apple2.position.x * CELL_SIZE,apple2.position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        ctx.drawImage(imgApple, apple2.position.x * CELL_SIZE, apple2.position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        
+        // draw eatable life
+        if (checkPrime(snake.score)) {
+            let imgLifeAdd = document.getElementById("eatable-life");
+            ctx.drawImage(imgLifeAdd, lifes.position.x * CELL_SIZE, lifes.position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
         
         createWall();
 
@@ -232,7 +252,7 @@ function teleport(snake) {
 }
 
 // function eat
-function eat(snake, apple1, apple2) {
+function eat(snake, apple1, apple2, lifes) {
     var soundEffect = document.getElementById("eat-apple");
 
     if (snake.head.x == apple1.position.x && snake.head.y == apple1.position.y) {
@@ -247,6 +267,15 @@ function eat(snake, apple1, apple2) {
         apple2.position = initPosition();
         snake.score++;
         snake.scoreReset++;
+        snake.body.push({ x: snake.head.x, y: snake.head.y });
+    }
+
+    if (snake.head.x == lifes.position.x && snake.head.y == lifes.position.y && checkPrime(snake.score)) {
+        soundEffect.play();
+        lifes.position = initPosition();
+        snake.score++;
+        snake.scoreReset++;
+        snake.life++;
         snake.body.push({ x: snake.head.x, y: snake.head.y });
     }
 
@@ -281,25 +310,25 @@ function eat(snake, apple1, apple2) {
 function moveLeft(snake) {
     snake.head.x--;
     teleport(snake);
-    eat(snake, apple1, apple2);
+    eat(snake, apple1, apple2, lifes);
 }
 
 function moveRight(snake) {
     snake.head.x++;
     teleport(snake);
-    eat(snake, apple1, apple2);
+    eat(snake, apple1, apple2, lifes);
 }
 
 function moveDown(snake) {
     snake.head.y++;
     teleport(snake);
-    eat(snake, apple1, apple2);
+    eat(snake, apple1, apple2, lifes);
 }
 
 function moveUp(snake) {
     snake.head.y--;
     teleport(snake);
-    eat(snake, apple1, apple2);
+    eat(snake, apple1, apple2,lifes);
 }
 
 function moveStop(snake) {
@@ -310,11 +339,14 @@ function moveStop(snake) {
 function checkCollision(snakes) {
     let isCollide = false;
     
+    var soundEffect = document.getElementById("hit-something");
+
     // check if snake hit body
     for (let i = 0; i < snakes.length; i++) {
         for (let j = 0; j < snakes.length; j++) {
             for (let k = 1; k < snakes[j].body.length; k++) {
                 if (snakes[i].head.x == snakes[j].body[k].x && snakes[i].head.y == snakes[j].body[k].y) {
+                    soundEffect.play();
                     snake.life--;
                     if (snake.life == 0) {
                         isCollide = true;
@@ -329,6 +361,7 @@ function checkCollision(snakes) {
     for (let i = 0; i < wallX.length; i++) {
         if (snake.head.x === wallX[i] && (snake.direction == 2 || snake.direction == 3)) {
             if (snake.head.y === wallY[i] || snake.head.y === wallY[i]) {
+                soundEffect.play();
                 snake.life--;
                 if (snake.life == 0) {
                     isCollide = true;
@@ -337,6 +370,7 @@ function checkCollision(snakes) {
         }
         if (snake.head.y === wallY[i] && (snake.direction == 0 || snake.direction == 1)) {
             if (snake.head.x === wallX[i] || snake.head.x === wallX[i]) {
+                soundEffect.play();
                 snake.life--;
                 if (snake.life == 0) {
                     isCollide = true;
@@ -369,7 +403,6 @@ function checkCollision(snakes) {
             apple2.position = initPosition();
         }
     }
-
 
     var soundEffect = document.getElementById("game-over");
 
