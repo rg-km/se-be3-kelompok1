@@ -211,6 +211,7 @@ function draw() {
         document.getElementById("score").innerHTML = "Score";
         drawScore(snake);
         document.getElementById("speed").innerHTML = "Speed " + MOVE_INTERVAL + " ms";
+        document.getElementById("life").innerHTML = "Life: " + snake.life;
 
     }, REDRAW_INTERVAL);
 }
@@ -310,11 +311,14 @@ function moveStop(snake) {
 function checkCollision(snakes) {
     let isCollide = false;
     
+    var soundEffect = document.getElementById("hit-something");
+
     // check if snake hit body
     for (let i = 0; i < snakes.length; i++) {
         for (let j = 0; j < snakes.length; j++) {
             for (let k = 1; k < snakes[j].body.length; k++) {
                 if (snakes[i].head.x == snakes[j].body[k].x && snakes[i].head.y == snakes[j].body[k].y) {
+                    soundEffect.play();
                     snake.life--;
                     if (snake.life == 0) {
                         isCollide = true;
@@ -329,6 +333,7 @@ function checkCollision(snakes) {
     for (let i = 0; i < wallX.length; i++) {
         if (snake.head.x === wallX[i] && (snake.direction == 2 || snake.direction == 3)) {
             if (snake.head.y === wallY[i] || snake.head.y === wallY[i]) {
+                soundEffect.play();
                 snake.life--;
                 if (snake.life == 0) {
                     isCollide = true;
@@ -337,6 +342,7 @@ function checkCollision(snakes) {
         }
         if (snake.head.y === wallY[i] && (snake.direction == 0 || snake.direction == 1)) {
             if (snake.head.x === wallX[i] || snake.head.x === wallX[i]) {
+                soundEffect.play();
                 snake.life--;
                 if (snake.life == 0) {
                     isCollide = true;
