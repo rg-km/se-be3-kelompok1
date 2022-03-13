@@ -123,7 +123,7 @@ function drawScore(snake) {
     scoreCtx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     scoreCtx.font = "25px Arial";
     scoreCtx.fillStyle = snake.color
-    scoreCtx.fillText(snake.score, 10, scoreCanvas.scrollHeight / 2);
+    scoreCtx.fillText(snake.score, 10, scoreCanvas.scrollHeight / 1.5);
 }
 
 // function to init wall at level
@@ -231,7 +231,6 @@ function draw() {
         document.getElementById("score").innerHTML = "Score";
         drawScore(snake);
         document.getElementById("speed").innerHTML = "Speed " + MOVE_INTERVAL + " ms";
-        document.getElementById("life").innerHTML = "Life: " + snake.life;
 
     }, REDRAW_INTERVAL);
 }
