@@ -205,14 +205,6 @@ function draw() {
             ctx.drawImage(imgSnakeBody, snake.body[i].x * CELL_SIZE, snake.body[i].y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
         }
 
-        // draw life icon
-        let imgLifeIcon = document.getElementById("life-icon");
-        var lifePositionX = 0;
-        for (let i = 1; i <= snake.life; i++) {
-            ctx.drawImage(imgLifeIcon, lifePositionX * CELL_SIZE, 0 * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-            lifePositionX = lifePositionX + 1;
-        }
-
         // draw apple
         let imgApple = document.getElementById("apple");
         ctx.drawImage(imgApple, apple1.position.x * CELL_SIZE, apple1.position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
@@ -222,6 +214,14 @@ function draw() {
         if (checkPrime(snake.score)) {
             let imgLifeAdd = document.getElementById("eatable-life");
             ctx.drawImage(imgLifeAdd, lifes.position.x * CELL_SIZE, lifes.position.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
+
+        // draw life icon
+        let imgLifeIcon = document.getElementById("life-icon");
+        var lifePositionX = 0;
+        for (let i = 1; i <= snake.life; i++) {
+            ctx.drawImage(imgLifeIcon, lifePositionX * CELL_SIZE, 0 * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+            lifePositionX = lifePositionX + 1;
         }
         
         createWall();
@@ -379,7 +379,7 @@ function checkCollision(snakes) {
         }
     } 
 
-    // check if apple not in wall position
+    // make apple not in wall position
     for (let i = 0; i < wallX.length; i++) {
         if (apple1.position.x === wallX[i]) {
             if (apple1.position.y === wallY[i] || apple1.position.y === wallY[i]) {
@@ -393,16 +393,19 @@ function checkCollision(snakes) {
         }
     }  
 
-    if (apple1.position.x === 0) {
-        if (apple1.position.y === 0 || apple1.position.y === 1 || apple1.position.y === 3) {
-            apple1.position = initPosition();
+    // make eatable life not in wall position
+    for (let i = 0; i < wallX.length; i++) {
+        if (lifes.position.x === wallX[i]) {
+            if (lifes.position.y === wallY[i] || lifes.position.y === wallY[i]) {
+                lifes.position = initPosition();
+            }
         }
-    }
-    if (apple2.position.x === 0) {
-        if (apple2.position.y === 0 || apple2.position.y === 1 || apple2.position.y === 3) {
-            apple2.position = initPosition();
+        if (apple2.position.y === wallY[i]) {
+            if (apple2.position.x === wallX[i] || apple2.position.x === wallX[i]) {
+                apple2.position = initPosition();
+            }
         }
-    }
+    }  
 
     var soundEffect = document.getElementById("game-over");
 
